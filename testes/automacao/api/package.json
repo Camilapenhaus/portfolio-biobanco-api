@@ -1,0 +1,16 @@
+{
+  "name": "biobanco-testes-api",
+  "version": "1.0.0",
+  "description": "Testes automatizados da API REST do BioBanco com Mocha, Chai e Supertest",
+  "private": true,
+  "scripts": {
+    "test": "mocha",
+    "test:relatorio": "mocha --reporter mochawesome --reporter-options reportDir=relatorio,reportFilename=relatorio-api,charts=true"
+  },
+  "devDependencies": {
+    "chai": "^4.5.0",
+    "mocha": "^10.8.2",
+    "mochawesome": "^7.1.3",
+    "supertest": "^7.0.0"
+  }
+}
