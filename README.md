@@ -15,6 +15,20 @@ Um biobanco guarda amostras biológicas (sangue, DNA, culturas de microrganismos
 3. **Lista de solicitação**: monta a lista de amostras que quer receber, escolhendo a quantidade de alíquotas (porções da amostra, cada uma num tubo) de cada uma.
 4. **Finalização da solicitação**: escolhe como pagar a taxa de processamento, informa o endereço do laboratório e confirma. O estoque é baixado e a solicitação vai para o histórico.
 
+### Adaptação do enunciado
+
+O enunciado original pedia um **e-commerce** com Login, Cadastro, Carrinho e Finalização de Compra. Como a proposta era criar um sistema diferente do e-commerce visto em aula, o tema foi **adaptado para a gestão de solicitações de amostras biológicas**, aproveitando a formação da autora em Biologia. As funcionalidades e as regras de negócio foram mantidas, só com nomes do novo contexto:
+
+| Enunciado (e-commerce) | BioBanco (gestão de amostras) |
+|---|---|
+| Produto | Amostra biológica |
+| Estoque do produto | Alíquotas disponíveis (tubos da amostra) |
+| Carrinho | Lista de solicitação |
+| Finalização de compra | Finalização da solicitação |
+| Cliente | Pesquisador |
+| Pagamento em dinheiro com 10% de desconto | Pagamento da taxa via PIX com 10% de desconto |
+| Cliente VIP (após R$ 300,00) com frete grátis | Pesquisador Parceiro (após R$ 300,00) com transporte refrigerado grátis |
+
 Tecnologias: Node.js, Express, MongoDB em memória (`mongodb-memory-server` + Mongoose), JWT, Swagger UI e HTML/CSS/JavaScript puro no site.
 
 > Os dados ficam só em memória. Sempre que a aplicação reinicia, o banco volta ao estado inicial com os dados de teste abaixo.
@@ -179,6 +193,8 @@ biobanco/
     ├── routes/                # Rotas da API
     └── services/regras.js     # Regras de negócio
 ```
+
+O site tem **modo claro e modo escuro** (chavinha no canto superior direito); a escolha fica salva no navegador.
 
 Os elementos do site têm atributos `data-testid`, para facilitar a localização dos elementos em testes.
 
