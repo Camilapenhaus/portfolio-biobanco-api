@@ -74,11 +74,13 @@ O token JWT expira em **2 horas**.
 
 ### Pesquisadores (senha de todos: `123456`)
 
-| Nome         | E-mail                      | Instituição                          | Parceiro | Total gasto | Para testar                                   |
-|--------------|-----------------------------|--------------------------------------|----------|-------------|-----------------------------------------------|
-| Ana Souza    | `ana.souza@biobanco.com`    | Universidade de São Paulo            | Sim      | R$ 350,00   | Transporte grátis (regra 3)                    |
-| Bruno Lima   | `bruno.lima@biobanco.com`   | Universidade Federal de Minas Gerais | Não      | R$ 0,00     | Pesquisador comum, paga transporte             |
-| Carla Mendes | `carla.mendes@biobanco.com` | Fiocruz                              | Não      | R$ 250,00   | Faltam R$ 50,00 para virar Parceira            |
+| Nome         | E-mail                       | Instituição (fictícia)             | Parceiro | Total gasto | Para testar                         |
+|--------------|------------------------------|------------------------------------|----------|-------------|-------------------------------------|
+| Ana Souza    | `ana.souza@biobanco.test`    | Universidade Federal do Vale Verde | Sim      | R$ 350,00   | Transporte grátis (regra 3)         |
+| Bruno Lima   | `bruno.lima@biobanco.test`   | Instituto de Pesquisa Aurora       | Não      | R$ 0,00     | Pesquisador comum, paga transporte  |
+| Carla Mendes | `carla.mendes@biobanco.test` | Centro de Biociências Horizonte    | Não      | R$ 250,00   | Faltam R$ 50,00 para virar Parceira |
+
+Todos os nomes, instituições e e-mails são fictícios. Os e-mails usam o domínio `.test`, reservado para testes, que não pertence a ninguém.
 
 ### Amostras
 

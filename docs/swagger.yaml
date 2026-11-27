@@ -60,10 +60,10 @@ components:
           example: Bruno Lima
         email:
           type: string
-          example: bruno.lima@biobanco.com
+          example: bruno.lima@biobanco.test
         instituicao:
           type: string
-          example: Universidade Federal de Minas Gerais
+          example: Instituto de Pesquisa Aurora
         parceiro:
           type: boolean
           example: false
@@ -77,18 +77,18 @@ components:
       properties:
         nome:
           type: string
-          example: Camila Pereira
+          example: Daniel Rocha
         email:
           type: string
           format: email
-          example: camila@lab.com
+          example: daniel.rocha@laboratorio.test
         senha:
           type: string
           minLength: 6
           example: "123456"
         instituicao:
           type: string
-          example: Instituto de Biologia
+          example: Laboratório Bioteste
 
     LoginRequest:
       type: object
@@ -96,7 +96,7 @@ components:
       properties:
         email:
           type: string
-          example: bruno.lima@biobanco.com
+          example: bruno.lima@biobanco.test
         senha:
           type: string
           example: "123456"
@@ -222,7 +222,7 @@ components:
           example: pix
         enderecoEntrega:
           type: string
-          example: Laboratório de Genética, Bloco B, sala 12 - Belo Horizonte/MG
+          example: Laboratório de Genética, Bloco B, sala 12 - Cidade Fictícia/BR
 
     ItemSolicitacao:
       type: object

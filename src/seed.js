@@ -69,22 +69,22 @@ const amostras = [
 const pesquisadores = [
   {
     nome: 'Ana Souza',
-    email: 'ana.souza@biobanco.com',
-    instituicao: 'Universidade de São Paulo',
+    email: 'ana.souza@biobanco.test',
+    instituicao: 'Universidade Federal do Vale Verde',
     parceiro: true,
     totalGasto: 350.0
   },
   {
     nome: 'Bruno Lima',
-    email: 'bruno.lima@biobanco.com',
-    instituicao: 'Universidade Federal de Minas Gerais',
+    email: 'bruno.lima@biobanco.test',
+    instituicao: 'Instituto de Pesquisa Aurora',
     parceiro: false,
     totalGasto: 0
   },
   {
     nome: 'Carla Mendes',
-    email: 'carla.mendes@biobanco.com',
-    instituicao: 'Fiocruz',
+    email: 'carla.mendes@biobanco.test',
+    instituicao: 'Centro de Biociências Horizonte',
     parceiro: false,
     totalGasto: 250.0
   }
