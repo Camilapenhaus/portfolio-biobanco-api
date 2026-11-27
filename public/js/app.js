@@ -115,23 +115,33 @@ async function carregarCatalogo() {
   amostras.forEach((amostra) => {
     const esgotada = amostra.estoque <= 0;
     const cartao = document.createElement('article');
-    cartao.className = 'cartao amostra';
+    const ilustracao = window.ILUSTRACOES[amostra.tipo] || window.ILUSTRACAO_PADRAO;
+    cartao.className = `cartao amostra cat-${ilustracao.categoria}`;
     cartao.dataset.testid = `amostra-${amostra.codigo}`;
     cartao.innerHTML = `
-      <span class="codigo"></span>
-      <h3></h3>
-      <p class="especie"></p>
-      <p class="detalhes"></p>
-      <span class="taxa"></span>
-      <span class="estoque ${esgotada ? 'esgotado' : ''}" data-testid="estoque-${amostra.codigo}"></span>
-      <div class="acoes">
-        <input type="number" min="1" value="1" aria-label="Quantidade" data-testid="quantidade-${amostra.codigo}" ${esgotada ? 'disabled' : ''} />
-        <button class="btn btn-pequeno" data-testid="adicionar-${amostra.codigo}" ${esgotada ? 'disabled' : ''}>Adicionar à lista</button>
+      <div class="ilustracao" aria-hidden="true">${ilustracao.svg}</div>
+      <div class="corpo">
+        <div class="etiquetas">
+          <span class="etiqueta-codigo" data-testid="codigo-${amostra.codigo}"></span>
+          <span class="selo-temperatura" data-testid="temperatura-${amostra.codigo}"></span>
+        </div>
+        <span class="tipo"></span>
+        <h3></h3>
+        <p class="especie"></p>
+        <p class="detalhes"></p>
+        <span class="taxa"></span>
+        <span class="estoque ${esgotada ? 'esgotado' : ''}" data-testid="estoque-${amostra.codigo}"></span>
+        <div class="acoes">
+          <input type="number" min="1" value="1" aria-label="Quantidade" data-testid="quantidade-${amostra.codigo}" ${esgotada ? 'disabled' : ''} />
+          <button class="btn btn-pequeno" data-testid="adicionar-${amostra.codigo}" ${esgotada ? 'disabled' : ''}>Adicionar à lista</button>
+        </div>
       </div>`;
-    cartao.querySelector('.codigo').textContent = `${amostra.codigo} · ${amostra.tipo}`;
+    cartao.querySelector('.etiqueta-codigo').textContent = amostra.codigo;
+    cartao.querySelector('.selo-temperatura').textContent = `❄ ${amostra.armazenamento}`;
+    cartao.querySelector('.tipo').textContent = amostra.tipo;
     cartao.querySelector('h3').textContent = amostra.nome;
     cartao.querySelector('.especie').textContent = amostra.especie;
-    cartao.querySelector('.detalhes').textContent = `${amostra.descricao} Armazenamento: ${amostra.armazenamento}.`;
+    cartao.querySelector('.detalhes').textContent = amostra.descricao;
     cartao.querySelector('.taxa').textContent = `${moeda(amostra.taxaProcessamento)} por alíquota`;
     cartao.querySelector('.estoque').textContent = esgotada
       ? 'Sem alíquotas disponíveis'
