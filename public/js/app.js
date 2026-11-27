@@ -87,6 +87,7 @@ function sair() {
   estado.token = null;
   estado.pesquisador = null;
   sessionStorage.removeItem('biobanco_token');
+  document.body.classList.remove('logado');
   $('#tela-app').classList.add('oculto');
   $('#area-usuario').classList.add('oculto');
   $('#tela-acesso').classList.remove('oculto');
@@ -95,6 +96,7 @@ $('#btn-sair').addEventListener('click', sair);
 
 // ---------- Área logada ----------
 async function entrarNoApp() {
+  document.body.classList.add('logado');
   $('#tela-acesso').classList.add('oculto');
   $('#tela-app').classList.remove('oculto');
   $('#area-usuario').classList.remove('oculto');
