@@ -2,7 +2,7 @@
 
 API REST e site Web para **solicitação de amostras biológicas** a um biobanco.
 
-Projeto de portfólio de QA: a aplicação existe para ser testada (testes de API, testes manuais e exploratórios). Por isso ela é pequena, tem regras de negócio claras e vem com dados de teste prontos.
+Projeto de portfólio pessoal do Curso de Mentoria em Testes de Software Mentorado por Júlio de Lima:a aplicação existe para ser testada (testes de API, testes manuais e exploratórios). Por isso ela é pequena, tem regras de negócio claras e vem com dados de teste prontos.
 
 ---
 
