@@ -5,6 +5,6 @@ module.exports = defineConfig({
     baseUrl: 'http://localhost:3000',
     viewportWidth: 1280,
     viewportHeight: 800,
-    video: true
+    video: false
   }
 });

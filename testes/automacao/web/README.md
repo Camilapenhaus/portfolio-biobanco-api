@@ -13,7 +13,7 @@ Os elementos da tela são localizados pelo atributo `data-testid`, que não muda
 ## Estrutura
 ```
 web/
-├── cypress.config.js          endereço do site (baseUrl) e gravação de vídeo
+├── cypress.config.js          endereço do site (baseUrl)
 └── cypress/
     ├── e2e/                   os testes (*.cy.js)
     ├── fixtures/carla.json    dados de login da Carla
@@ -43,7 +43,7 @@ npm install
 npm run cy:open
 ```
 
-4. Para rodar direto no terminal, com vídeo gravado em `cypress/videos`:
+4. Para rodar direto no terminal:
 
 ```
 npm test
@@ -52,4 +52,5 @@ npm test
 ## Observações
 - **Pré-condição do CT-01:** a Carla não pode já ser Parceira. O teste confere isso pela API antes de começar e avisa com "Pré-condição não atendida" se for preciso reiniciar a aplicação.
 - Os testes de API (`../api`) e os do site usam a mesma Carla: reinicie a aplicação entre uma execução e outra.
+- A gravação de vídeo está desligada (`video: false`) e as pastas `cypress/videos` e `cypress/screenshots` não são versionadas, para não pesar o repositório. As evidências ficam nos prints em `testes/evidencias/automacao`.
 - Todos os dados são fictícios.
