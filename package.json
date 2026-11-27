@@ -1,0 +1,23 @@
+{
+  "name": "biobanco",
+  "version": "1.0.0",
+  "description": "BioBanco - API REST e site Web para solicitação de amostras biológicas a um biobanco",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": ["biobanco", "amostras", "api", "qa", "portfolio"],
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.21.2",
+    "js-yaml": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongodb-memory-server": "^10.1.4",
+    "mongoose": "^8.9.5",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

@@ -1,0 +1,277 @@
+{
+  "stats": {
+    "suites": 3,
+    "tests": 5,
+    "passes": 5,
+    "pending": 0,
+    "failures": 0,
+    "start": "2026-11-27T00:26:54.113Z",
+    "end": "2026-11-27T00:26:54.770Z",
+    "duration": 657,
+    "testsRegistered": 5,
+    "passPercent": 100,
+    "pendingPercent": 0,
+    "other": 0,
+    "hasOther": false,
+    "skipped": 0,
+    "hasSkipped": false
+  },
+  "results": [
+    {
+      "uuid": "7242a748-7da1-4c74-b86a-c1860c452c97",
+      "title": "",
+      "fullFile": "",
+      "file": "",
+      "beforeHooks": [],
+      "afterHooks": [],
+      "tests": [],
+      "suites": [
+        {
+          "uuid": "0b4dcbe3-9938-4369-976b-195bbc505776",
+          "title": "Lista de solicitação",
+          "fullFile": "/Users/Camila/Documents/Projetos/portfolio-biobanco-api/testes/automacao/api/tests/lista.test.js",
+          "file": "/tests/lista.test.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Lista de solicitação\"",
+              "fullTitle": "Lista de solicitação \"before all\" hook in \"Lista de solicitação\"",
+              "timedOut": false,
+              "duration": 237,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "token = await criarPesquisadorEObterToken();",
+              "err": {},
+              "uuid": "dd53d0ce-deaa-463a-8db5-868f4edb8ad6",
+              "parentUUID": "0b4dcbe3-9938-4369-976b-195bbc505776",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [
+            {
+              "title": "\"after each\" hook in \"Lista de solicitação\"",
+              "fullTitle": "Lista de solicitação \"after each\" hook in \"Lista de solicitação\"",
+              "timedOut": false,
+              "duration": 28,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "await request(pegarBaseURL())\n  .delete('/api/lista')\n  .set('Authorization', `Bearer ${token}`);",
+              "err": {},
+              "uuid": "ca250164-cbe0-4c42-aff7-de804cf96b07",
+              "parentUUID": "0b4dcbe3-9938-4369-976b-195bbc505776",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "tests": [
+            {
+              "title": "Deve aplicar 10% de desconto na taxa quando o pagamento é PIX",
+              "fullTitle": "Lista de solicitação Deve aplicar 10% de desconto na taxa quando o pagamento é PIX",
+              "timedOut": false,
+              "duration": 83,
+              "state": "passed",
+              "speed": "slow",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const idSangue = await buscarIdDaAmostra('BIO-001'); // taxa R$ 80,00\nawait request(pegarBaseURL())\n  .post('/api/lista/itens')\n  .set('Authorization', `Bearer ${token}`)\n  .send({ amostraId: idSangue, quantidade: 1 })\n  .expect(201);\nconst resposta = await request(pegarBaseURL())\n  .get('/api/lista/resumo')\n  .query({ formaPagamento: 'pix' })\n  .set('Authorization', `Bearer ${token}`);\nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.subtotal).to.equal(80);\nexpect(resposta.body.desconto).to.equal(8);\nexpect(resposta.body.transporte).to.equal(45);\nexpect(resposta.body.total).to.equal(117);",
+              "err": {},
+              "uuid": "fe7e4ba0-7eee-4c19-86f1-82a6ca969476",
+              "parentUUID": "0b4dcbe3-9938-4369-976b-195bbc505776",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve retornar 422 ao adicionar uma amostra sem alíquotas disponíveis",
+              "fullTitle": "Lista de solicitação Deve retornar 422 ao adicionar uma amostra sem alíquotas disponíveis",
+              "timedOut": false,
+              "duration": 24,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const idEcoli = await buscarIdDaAmostra('BIO-003'); // estoque 0\nconst resposta = await request(pegarBaseURL())\n  .post('/api/lista/itens')\n  .set('Authorization', `Bearer ${token}`)\n  .send({ amostraId: idEcoli, quantidade: 1 });\nexpect(resposta.status).to.equal(422);\nexpect(resposta.body.erro).to.equal('Amostra sem alíquotas disponíveis no momento');",
+              "err": {},
+              "uuid": "c40defa2-babf-44cb-9904-3f9ce9f1d858",
+              "parentUUID": "0b4dcbe3-9938-4369-976b-195bbc505776",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "fe7e4ba0-7eee-4c19-86f1-82a6ca969476",
+            "c40defa2-babf-44cb-9904-3f9ce9f1d858"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 107,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        },
+        {
+          "uuid": "d5f15bc4-e8d9-42c9-85d0-0be3b8be6a9a",
+          "title": "Login",
+          "fullFile": "/Users/Camila/Documents/Projetos/portfolio-biobanco-api/testes/automacao/api/tests/login.test.js",
+          "file": "/tests/login.test.js",
+          "beforeHooks": [],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Deve retornar 200 e um token quando o e-mail e a senha são válidos",
+              "fullTitle": "Login Deve retornar 200 e um token quando o e-mail e a senha são válidos",
+              "timedOut": false,
+              "duration": 70,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const resposta = await request(pegarBaseURL())\n  .post('/api/auth/login')\n  .set('Content-Type', 'application/json')\n  .send(postLogin);\nexpect(resposta.status).to.equal(200);\nexpect(resposta.body.token).to.be.a('string');\nexpect(resposta.body.pesquisador.email).to.equal('carla.mendes@biobanco.test');",
+              "err": {},
+              "uuid": "d431fc96-02ae-4e6a-82c1-21be0579cd7a",
+              "parentUUID": "d5f15bc4-e8d9-42c9-85d0-0be3b8be6a9a",
+              "isHook": false,
+              "skipped": false
+            },
+            {
+              "title": "Deve retornar 401 quando a senha está errada",
+              "fullTitle": "Login Deve retornar 401 quando a senha está errada",
+              "timedOut": false,
+              "duration": 67,
+              "state": "passed",
+              "speed": "medium",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const resposta = await request(pegarBaseURL())\n  .post('/api/auth/login')\n  .set('Content-Type', 'application/json')\n  .send({ email: postLogin.email, senha: 'senhaErrada' });\nexpect(resposta.status).to.equal(401);\nexpect(resposta.body.erro).to.equal('E-mail ou senha inválidos');",
+              "err": {},
+              "uuid": "b72e7f15-bcd3-45c0-af77-d584b3fd4cba",
+              "parentUUID": "d5f15bc4-e8d9-42c9-85d0-0be3b8be6a9a",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "d431fc96-02ae-4e6a-82c1-21be0579cd7a",
+            "b72e7f15-bcd3-45c0-af77-d584b3fd4cba"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 137,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        },
+        {
+          "uuid": "9c86ce27-76a7-420e-9c00-0b0f6c459fb6",
+          "title": "Solicitação de amostras (CT-01)",
+          "fullFile": "/Users/Camila/Documents/Projetos/portfolio-biobanco-api/testes/automacao/api/tests/solicitacao.test.js",
+          "file": "/tests/solicitacao.test.js",
+          "beforeHooks": [
+            {
+              "title": "\"before all\" hook in \"Solicitação de amostras (CT-01)\"",
+              "fullTitle": "Solicitação de amostras (CT-01) \"before all\" hook in \"Solicitação de amostras (CT-01)\"",
+              "timedOut": false,
+              "duration": 72,
+              "state": null,
+              "speed": null,
+              "pass": false,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "token = await obterToken();\n// Pré-condição: a Carla ainda não pode ser Parceira.\nconst perfil = await request(pegarBaseURL())\n  .get('/api/pesquisadores/me')\n  .set('Authorization', `Bearer ${token}`);\nif (perfil.body.parceiro || perfil.body.totalGasto !== 250) {\n  throw new Error(\n    'Pré-condição não atendida: a Carla já fez compras. Reinicie a aplicação (npm start) e rode de novo.'\n  );\n}\nawait request(pegarBaseURL())\n  .delete('/api/lista')\n  .set('Authorization', `Bearer ${token}`);",
+              "err": {},
+              "uuid": "150c762f-843a-4be1-87a6-ea31c717b535",
+              "parentUUID": "9c86ce27-76a7-420e-9c00-0b0f6c459fb6",
+              "isHook": true,
+              "skipped": false
+            }
+          ],
+          "afterHooks": [],
+          "tests": [
+            {
+              "title": "Deve tornar a Carla Pesquisadora Parceira ao chegar a R$ 300,00 em taxas",
+              "fullTitle": "Solicitação de amostras (CT-01) Deve tornar a Carla Pesquisadora Parceira ao chegar a R$ 300,00 em taxas",
+              "timedOut": false,
+              "duration": 37,
+              "state": "passed",
+              "speed": "fast",
+              "pass": true,
+              "fail": false,
+              "pending": false,
+              "context": null,
+              "code": "const idLevedura = await buscarIdDaAmostra('BIO-006');\nawait request(pegarBaseURL())\n  .post('/api/lista/itens')\n  .set('Authorization', `Bearer ${token}`)\n  .send({ amostraId: idLevedura, quantidade: 1 })\n  .expect(201);\nconst resposta = await request(pegarBaseURL())\n  .post('/api/solicitacoes')\n  .set('Authorization', `Bearer ${token}`)\n  .send({ formaPagamento: 'boleto', enderecoEntrega: 'Rua das Pesquisas, 100 - Laboratório 2' });\nexpect(resposta.status).to.equal(201);\nexpect(resposta.body.mensagem).to.include('Pesquisador Parceiro');\nexpect(resposta.body.solicitacao.total).to.equal(95);\nexpect(resposta.body.pesquisador.parceiro).to.equal(true);\nexpect(resposta.body.pesquisador.totalGasto).to.equal(300);",
+              "err": {},
+              "uuid": "9bef4f23-0bcc-4eb9-a23b-aab1436fd40d",
+              "parentUUID": "9c86ce27-76a7-420e-9c00-0b0f6c459fb6",
+              "isHook": false,
+              "skipped": false
+            }
+          ],
+          "suites": [],
+          "passes": [
+            "9bef4f23-0bcc-4eb9-a23b-aab1436fd40d"
+          ],
+          "failures": [],
+          "pending": [],
+          "skipped": [],
+          "duration": 37,
+          "root": false,
+          "rootEmpty": false,
+          "_timeout": 10000
+        }
+      ],
+      "passes": [],
+      "failures": [],
+      "pending": [],
+      "skipped": [],
+      "duration": 0,
+      "root": true,
+      "rootEmpty": true,
+      "_timeout": 10000
+    }
+  ],
+  "meta": {
+    "mocha": {
+      "version": "10.8.2"
+    },
+    "mochawesome": {
+      "options": {
+        "quiet": false,
+        "reportFilename": "relatorio-api",
+        "saveHtml": true,
+        "saveJson": true,
+        "consoleReporter": "spec",
+        "useInlineDiffs": false,
+        "code": true
+      },
+      "version": "7.1.4"
+    },
+    "marge": {
+      "options": {
+        "reportDir": "relatorio",
+        "reportFilename": "relatorio-api",
+        "charts": "true"
+      },
+      "version": "6.3.2"
+    }
+  }
+}
