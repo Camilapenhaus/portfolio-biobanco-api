@@ -135,7 +135,7 @@ async function carregarCatalogo() {
     cartao.querySelector('.taxa').textContent = `${moeda(amostra.taxaProcessamento)} por alíquota`;
     cartao.querySelector('.estoque').textContent = esgotada
       ? 'Sem alíquotas disponíveis'
-      : `${amostra.estoque} alíquota(s) disponível(is)`;
+      : `${amostra.estoque} alíquota(s) (tubos) disponível(is)`;
 
     cartao.querySelector('button').addEventListener('click', async () => {
       const quantidade = Number(cartao.querySelector('input').value);

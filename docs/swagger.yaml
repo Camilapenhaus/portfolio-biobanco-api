@@ -11,7 +11,7 @@ info:
 
     **Regras de negócio**
     1. Taxa de processamento paga via **PIX** recebe **10% de desconto** (sobre o subtotal das amostras).
-    2. Amostras só podem ser adicionadas à lista se tiverem **alíquotas disponíveis** (estoque),
+    2. Amostras só podem ser adicionadas à lista se tiverem **alíquotas disponíveis** (alíquota = porção da amostra, cada uma num tubo; é o estoque),
        e a quantidade total na lista não pode passar do estoque.
     3. Apenas **Pesquisadores Parceiros** têm **transporte refrigerado grátis** (normalmente R$ 45,00).
        O pesquisador vira Parceiro ao acumular **R$ 300,00** em taxas pagas (subtotal menos desconto,
@@ -85,7 +85,7 @@ components:
         senha:
           type: string
           minLength: 6
-          example: senha123
+          example: "123456"
         instituicao:
           type: string
           example: Instituto de Biologia
@@ -99,7 +99,7 @@ components:
           example: bruno.lima@biobanco.com
         senha:
           type: string
-          example: senha123
+          example: "123456"
 
     LoginResponse:
       type: object
@@ -139,7 +139,7 @@ components:
           example: 80
         estoque:
           type: integer
-          description: Alíquotas disponíveis
+          description: Alíquotas disponíveis (porções da amostra, cada uma num tubo)
           example: 10
 
     ItemListaRequest:

@@ -1,7 +1,7 @@
 const Amostra = require('./models/Amostra');
 const Pesquisador = require('./models/Pesquisador');
 
-const SENHA_PADRAO = 'senha123';
+const SENHA_PADRAO = '123456';
 
 const amostras = [
   {
@@ -33,6 +33,36 @@ const amostras = [
     armazenamento: '-80 °C',
     taxaProcessamento: 60.0,
     estoque: 0
+  },
+  {
+    codigo: 'BIO-004',
+    nome: 'Soro humano',
+    especie: 'Homo sapiens',
+    tipo: 'Soro',
+    descricao: 'Alíquota de 500 µL de soro separado por centrifugação.',
+    armazenamento: '-80 °C',
+    taxaProcessamento: 70.0,
+    estoque: 8
+  },
+  {
+    codigo: 'BIO-005',
+    nome: 'RNA total de peixe-zebra',
+    especie: 'Danio rerio',
+    tipo: 'RNA',
+    descricao: 'Alíquota de 20 µL de RNA total extraído de embriões. Última alíquota disponível.',
+    armazenamento: '-80 °C',
+    taxaProcessamento: 150.0,
+    estoque: 1
+  },
+  {
+    codigo: 'BIO-006',
+    nome: 'Cultura de levedura S288C',
+    especie: 'Saccharomyces cerevisiae',
+    tipo: 'Cultura de levedura',
+    descricao: 'Estoque em glicerol 15% da linhagem de referência S288C.',
+    armazenamento: '-80 °C',
+    taxaProcessamento: 50.0,
+    estoque: 12
   }
 ];
 

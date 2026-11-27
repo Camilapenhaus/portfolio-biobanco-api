@@ -12,7 +12,7 @@ Um biobanco guarda amostras biológicas (sangue, DNA, culturas de microrganismos
 
 1. **Cadastro**: cria a conta informando nome, instituição, e-mail e senha.
 2. **Login**: entra e recebe um token JWT.
-3. **Lista de solicitação**: monta a lista de amostras que quer receber, escolhendo a quantidade de alíquotas de cada uma.
+3. **Lista de solicitação**: monta a lista de amostras que quer receber, escolhendo a quantidade de alíquotas (porções da amostra, cada uma num tubo) de cada uma.
 4. **Finalização da solicitação**: escolhe como pagar a taxa de processamento, informa o endereço do laboratório e confirma. O estoque é baixado e a solicitação vai para o histórico.
 
 Tecnologias: Node.js, Express, MongoDB em memória (`mongodb-memory-server` + Mongoose), JWT, Swagger UI e HTML/CSS/JavaScript puro no site.
@@ -72,7 +72,7 @@ O token JWT expira em **2 horas**.
 
 ## Quais dados de teste estão incluídos
 
-### Pesquisadores (senha de todos: `senha123`)
+### Pesquisadores (senha de todos: `123456`)
 
 | Nome         | E-mail                      | Instituição                          | Parceiro | Total gasto | Para testar                                   |
 |--------------|-----------------------------|--------------------------------------|----------|-------------|-----------------------------------------------|
@@ -87,8 +87,11 @@ O token JWT expira em **2 horas**.
 | BIO-001 | Sangue total humano (EDTA)           | Sangue             | -80 °C        | R$ 80,00          | 10                    |
 | BIO-002 | DNA genômico de *Arabidopsis thaliana* | DNA              | -20 °C        | R$ 120,00         | 5                     |
 | BIO-003 | Cultura de *Escherichia coli* K-12   | Cultura bacteriana | -80 °C        | R$ 60,00          | **0** (sem estoque)   |
+| BIO-004 | Soro humano                          | Soro               | -80 °C        | R$ 70,00          | 8                     |
+| BIO-005 | RNA total de peixe-zebra (*Danio rerio*) | RNA            | -80 °C        | R$ 150,00         | **1** (última)        |
+| BIO-006 | Cultura de levedura S288C (*Saccharomyces cerevisiae*) | Cultura de levedura | -80 °C | R$ 50,00 | 12 |
 
-Os ids das amostras são gerados a cada execução. Consulte `GET /api/amostras` para pegar os ids atuais.
+A BIO-003 serve para testar a amostra sem estoque, e a BIO-005, o limite de estoque (só 1 alíquota). Os ids das amostras são gerados a cada execução. Consulte `GET /api/amostras` para pegar os ids atuais.
 
 ---
 
