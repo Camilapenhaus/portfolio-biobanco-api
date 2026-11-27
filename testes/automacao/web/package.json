@@ -1,0 +1,13 @@
+{
+  "name": "biobanco-testes-web",
+  "version": "1.0.0",
+  "description": "Testes automatizados do site do BioBanco com Cypress",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "test": "cypress run"
+  },
+  "devDependencies": {
+    "cypress": "^13.7.3"
+  }
+}
