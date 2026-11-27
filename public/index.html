@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioBanco | Solicitação de amostras biológicas</title>
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="logo" aria-hidden="true">🧬</span>
+      <div>
+        <h1>BioBanco</h1>
+        <p>Solicitação de amostras biológicas para pesquisa</p>
+      </div>
+    </div>
+    <div id="area-usuario" class="area-usuario oculto" data-testid="area-usuario">
+      <span id="nome-usuario" data-testid="nome-usuario"></span>
+      <span id="selo-parceiro" class="selo oculto" data-testid="selo-parceiro">Parceiro</span>
+      <button id="btn-sair" class="btn btn-secundario" data-testid="btn-sair">Sair</button>
+    </div>
+  </header>
+
+  <div id="mensagem" class="mensagem oculto" role="alert" data-testid="mensagem"></div>
+
+  <!-- Login e Cadastro -->
+  <main id="tela-acesso" class="tela-acesso">
+    <section class="cartao acesso">
+      <div class="abas">
+        <button class="aba ativa" data-aba="login" data-testid="aba-login">Entrar</button>
+        <button class="aba" data-aba="cadastro" data-testid="aba-cadastro">Cadastrar</button>
+      </div>
+
+      <form id="form-login" class="formulario" data-testid="form-login">
+        <label>E-mail
+          <input type="email" id="login-email" required data-testid="login-email" />
+        </label>
+        <label>Senha
+          <input type="password" id="login-senha" required data-testid="login-senha" />
+        </label>
+        <button type="submit" class="btn" data-testid="btn-entrar">Entrar</button>
+      </form>
+
+      <form id="form-cadastro" class="formulario oculto" data-testid="form-cadastro">
+        <label>Nome completo
+          <input type="text" id="cadastro-nome" required data-testid="cadastro-nome" />
+        </label>
+        <label>Instituição
+          <input type="text" id="cadastro-instituicao" required data-testid="cadastro-instituicao" />
+        </label>
+        <label>E-mail
+          <input type="email" id="cadastro-email" required data-testid="cadastro-email" />
+        </label>
+        <label>Senha (mínimo 6 caracteres)
+          <input type="password" id="cadastro-senha" required minlength="6" data-testid="cadastro-senha" />
+        </label>
+        <button type="submit" class="btn" data-testid="btn-cadastrar">Criar conta</button>
+      </form>
+    </section>
+
+    <aside class="cartao regras">
+      <h2>Como funciona</h2>
+      <ul>
+        <li><strong>PIX:</strong> 10% de desconto na taxa de processamento.</li>
+        <li><strong>Estoque:</strong> só entram na lista amostras com alíquotas disponíveis.</li>
+        <li><strong>Pesquisador Parceiro:</strong> transporte refrigerado grátis. Você vira Parceiro ao acumular R$ 300,00 em taxas.</li>
+      </ul>
+      <p class="links">
+        <a href="/api-docs" target="_blank" rel="noopener">Documentação da API (Swagger)</a>
+      </p>
+    </aside>
+  </main>
+
+  <!-- Área logada -->
+  <main id="tela-app" class="tela-app oculto">
+    <section class="catalogo">
+      <h2>Catálogo de amostras</h2>
+      <div id="lista-amostras" class="grade" data-testid="catalogo"></div>
+    </section>
+
+    <aside class="lateral">
+      <section class="cartao" data-testid="painel-lista">
+        <h2>Lista de solicitação</h2>
+        <ul id="itens-lista" class="itens" data-testid="itens-lista"></ul>
+        <p class="vazio" id="lista-vazia" data-testid="lista-vazia">Nenhuma amostra na lista.</p>
+        <button id="btn-esvaziar" class="btn btn-secundario oculto" data-testid="btn-esvaziar">Esvaziar lista</button>
+      </section>
+
+      <section class="cartao" id="painel-finalizar" data-testid="painel-finalizar">
+        <h2>Finalizar solicitação</h2>
+        <form id="form-finalizar" class="formulario">
+          <fieldset>
+            <legend>Pagamento da taxa</legend>
+            <label class="opcao"><input type="radio" name="pagamento" value="pix" checked data-testid="pagamento-pix" /> PIX (10% de desconto)</label>
+            <label class="opcao"><input type="radio" name="pagamento" value="cartao" data-testid="pagamento-cartao" /> Cartão</label>
+            <label class="opcao"><input type="radio" name="pagamento" value="boleto" data-testid="pagamento-boleto" /> Boleto</label>
+          </fieldset>
+          <label>Endereço de entrega do laboratório
+            <textarea id="endereco" rows="2" required data-testid="endereco"></textarea>
+          </label>
+          <dl class="resumo" data-testid="resumo">
+            <dt>Subtotal</dt><dd id="resumo-subtotal" data-testid="resumo-subtotal">R$ 0,00</dd>
+            <dt>Desconto PIX</dt><dd id="resumo-desconto" data-testid="resumo-desconto">R$ 0,00</dd>
+            <dt>Transporte refrigerado</dt><dd id="resumo-transporte" data-testid="resumo-transporte">R$ 0,00</dd>
+            <dt class="total">Total</dt><dd id="resumo-total" class="total" data-testid="resumo-total">R$ 0,00</dd>
+          </dl>
+          <button type="submit" class="btn" id="btn-finalizar" data-testid="btn-finalizar">Confirmar solicitação</button>
+        </form>
+      </section>
+
+      <section class="cartao">
+        <h2>Minhas solicitações</h2>
+        <ul id="historico" class="historico" data-testid="historico"></ul>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="rodape">
+    BioBanco · projeto de portfólio de QA ·
+    <a href="/api-docs" target="_blank" rel="noopener">Swagger</a>
+  </footer>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>
