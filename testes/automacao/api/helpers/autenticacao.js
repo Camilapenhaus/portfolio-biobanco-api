@@ -28,7 +28,7 @@ async function criarPesquisadorEObterToken() {
 async function buscarIdDaAmostra(codigo) {
   const resposta = await request(pegarBaseURL()).get('/api/amostras');
   const amostra = resposta.body.find((item) => item.codigo === codigo);
-  return amostra._id;
+  return amostra.id;
 }
 
 module.exports = { obterToken, criarPesquisadorEObterToken, buscarIdDaAmostra };
