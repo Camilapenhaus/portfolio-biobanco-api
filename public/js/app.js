@@ -6,6 +6,33 @@ const estado = {
 };
 
 const $ = (seletor) => document.querySelector(seletor);
+
+// ---------- Modo claro / modo escuro ----------
+function temaAtual() {
+  return document.documentElement.getAttribute('data-tema') === 'escuro' ? 'escuro' : 'claro';
+}
+
+function aplicarTema(tema) {
+  if (tema === 'escuro') {
+    document.documentElement.setAttribute('data-tema', 'escuro');
+  } else {
+    document.documentElement.removeAttribute('data-tema');
+  }
+  // Chavinha acessível: role="switch" + aria-checked diz ao leitor de tela se o modo escuro está ligado
+  const chave = $('#btn-tema');
+  chave.setAttribute('aria-checked', tema === 'escuro' ? 'true' : 'false');
+  chave.title = tema === 'escuro' ? 'Ativar modo claro' : 'Ativar modo escuro';
+  try {
+    localStorage.setItem('biobanco_tema', tema);
+  } catch (e) {
+    // Sem localStorage: o tema vale só até recarregar a página
+  }
+}
+
+$('#btn-tema').addEventListener('click', () => {
+  aplicarTema(temaAtual() === 'escuro' ? 'claro' : 'escuro');
+});
+aplicarTema(temaAtual());
 const moeda = (valor) =>
   Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 

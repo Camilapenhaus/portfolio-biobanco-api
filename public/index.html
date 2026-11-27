@@ -8,8 +8,25 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/css/style.css" />
+  <script>
+    // Aplica o tema salvo antes de desenhar a página (evita "piscar" no tema errado)
+    try {
+      if (localStorage.getItem('biobanco_tema') === 'escuro') {
+        document.documentElement.setAttribute('data-tema', 'escuro');
+      }
+    } catch (e) { /* navegador sem localStorage: fica no tema claro */ }
+  </script>
 </head>
 <body>
+  <div class="barra-tema">
+    <button type="button" id="btn-tema" class="chave-tema" role="switch" aria-checked="false"
+      aria-label="Modo escuro" title="Ativar modo escuro" data-testid="btn-tema">
+      <span class="bolinha" aria-hidden="true"></span>
+      <span class="icone icone-sol" aria-hidden="true">☀</span>
+      <span class="icone icone-lua" aria-hidden="true">☾</span>
+    </button>
+  </div>
+
   <header class="topo">
     <div class="marca">
       <div class="logo" data-testid="logo">
