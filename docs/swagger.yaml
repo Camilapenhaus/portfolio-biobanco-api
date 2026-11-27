@@ -1,0 +1,621 @@
+openapi: 3.0.3
+info:
+  title: BioBanco API
+  version: 1.0.0
+  description: |
+    API REST do **BioBanco**, um sistema para pesquisadores solicitarem amostras biológicas
+    (sangue, DNA, culturas) a um biobanco.
+
+    Funcionalidades: **Login**, **Cadastro**, **Lista de solicitação** (o "carrinho" de amostras)
+    e **Finalização da solicitação**.
+
+    **Regras de negócio**
+    1. Taxa de processamento paga via **PIX** recebe **10% de desconto** (sobre o subtotal das amostras).
+    2. Amostras só podem ser adicionadas à lista se tiverem **alíquotas disponíveis** (estoque),
+       e a quantidade total na lista não pode passar do estoque.
+    3. Apenas **Pesquisadores Parceiros** têm **transporte refrigerado grátis** (normalmente R$ 45,00).
+       O pesquisador vira Parceiro ao acumular **R$ 300,00** em taxas pagas (subtotal menos desconto,
+       sem o transporte). O benefício vale a partir da solicitação seguinte.
+
+    Para usar as rotas protegidas: faça login em `POST /api/auth/login`, copie o `token`
+    e clique em **Authorize** informando apenas o token.
+servers:
+  - url: http://localhost:3000
+    description: Ambiente local
+tags:
+  - name: Autenticação
+    description: Cadastro e login de pesquisadores
+  - name: Amostras
+    description: Catálogo de amostras do biobanco
+  - name: Lista de solicitação
+    description: Amostras escolhidas antes de finalizar (equivalente ao carrinho)
+  - name: Solicitações
+    description: Finalização e histórico de solicitações
+  - name: Pesquisadores
+    description: Dados do pesquisador logado
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    Erro:
+      type: object
+      properties:
+        erro:
+          type: string
+          example: Mensagem explicando o problema
+
+    Pesquisador:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6650f1c2a1b2c3d4e5f60718
+        nome:
+          type: string
+          example: Bruno Lima
+        email:
+          type: string
+          example: bruno.lima@biobanco.com
+        instituicao:
+          type: string
+          example: Universidade Federal de Minas Gerais
+        parceiro:
+          type: boolean
+          example: false
+        totalGasto:
+          type: number
+          example: 0
+
+    CadastroRequest:
+      type: object
+      required: [nome, email, senha, instituicao]
+      properties:
+        nome:
+          type: string
+          example: Camila Pereira
+        email:
+          type: string
+          format: email
+          example: camila@lab.com
+        senha:
+          type: string
+          minLength: 6
+          example: senha123
+        instituicao:
+          type: string
+          example: Instituto de Biologia
+
+    LoginRequest:
+      type: object
+      required: [email, senha]
+      properties:
+        email:
+          type: string
+          example: bruno.lima@biobanco.com
+        senha:
+          type: string
+          example: senha123
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        pesquisador:
+          $ref: '#/components/schemas/Pesquisador'
+
+    Amostra:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 6650f1c2a1b2c3d4e5f60001
+        codigo:
+          type: string
+          example: BIO-001
+        nome:
+          type: string
+          example: Sangue total humano (EDTA)
+        especie:
+          type: string
+          example: Homo sapiens
+        tipo:
+          type: string
+          example: Sangue
+        descricao:
+          type: string
+          example: Alíquota de 1 mL de sangue total coletado em tubo com EDTA.
+        armazenamento:
+          type: string
+          example: '-80 °C'
+        taxaProcessamento:
+          type: number
+          example: 80
+        estoque:
+          type: integer
+          description: Alíquotas disponíveis
+          example: 10
+
+    ItemListaRequest:
+      type: object
+      required: [amostraId]
+      properties:
+        amostraId:
+          type: string
+          example: 6650f1c2a1b2c3d4e5f60001
+        quantidade:
+          type: integer
+          minimum: 1
+          default: 1
+          example: 2
+
+    ItemLista:
+      type: object
+      properties:
+        amostraId:
+          type: string
+        codigo:
+          type: string
+          example: BIO-001
+        nome:
+          type: string
+          example: Sangue total humano (EDTA)
+        taxaProcessamento:
+          type: number
+          example: 80
+        quantidade:
+          type: integer
+          example: 2
+        subtotalItem:
+          type: number
+          example: 160
+
+    Lista:
+      type: object
+      properties:
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemLista'
+        subtotal:
+          type: number
+          example: 160
+
+    Resumo:
+      type: object
+      properties:
+        formaPagamento:
+          type: string
+          enum: [pix, cartao, boleto]
+        parceiro:
+          type: boolean
+          example: false
+        subtotal:
+          type: number
+          example: 160
+        desconto:
+          type: number
+          example: 16
+        transporte:
+          type: number
+          example: 45
+        total:
+          type: number
+          example: 189
+        transporteGratis:
+          type: boolean
+          example: false
+
+    FinalizarRequest:
+      type: object
+      required: [formaPagamento, enderecoEntrega]
+      properties:
+        formaPagamento:
+          type: string
+          enum: [pix, cartao, boleto]
+          example: pix
+        enderecoEntrega:
+          type: string
+          example: Laboratório de Genética, Bloco B, sala 12 - Belo Horizonte/MG
+
+    ItemSolicitacao:
+      type: object
+      properties:
+        amostra:
+          type: string
+        codigo:
+          type: string
+        nome:
+          type: string
+        quantidade:
+          type: integer
+        taxaUnitaria:
+          type: number
+
+    Solicitacao:
+      type: object
+      properties:
+        id:
+          type: string
+        pesquisador:
+          type: string
+        itens:
+          type: array
+          items:
+            $ref: '#/components/schemas/ItemSolicitacao'
+        formaPagamento:
+          type: string
+          enum: [pix, cartao, boleto]
+        enderecoEntrega:
+          type: string
+        subtotal:
+          type: number
+          example: 160
+        desconto:
+          type: number
+          example: 16
+        transporte:
+          type: number
+          example: 45
+        total:
+          type: number
+          example: 189
+        transporteGratis:
+          type: boolean
+        status:
+          type: string
+          example: confirmada
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    FinalizarResponse:
+      type: object
+      properties:
+        mensagem:
+          type: string
+          example: Solicitação confirmada!
+        solicitacao:
+          $ref: '#/components/schemas/Solicitacao'
+        pesquisador:
+          $ref: '#/components/schemas/Pesquisador'
+
+  responses:
+    NaoAutorizado:
+      description: Token ausente, inválido ou expirado
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+    RequisicaoInvalida:
+      description: Dados inválidos na requisição
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Erro'
+
+paths:
+  /api/auth/cadastro:
+    post:
+      tags: [Autenticação]
+      summary: Cadastrar pesquisador
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CadastroRequest'
+      responses:
+        '201':
+          description: Pesquisador cadastrado
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensagem:
+                    type: string
+                    example: Pesquisador cadastrado com sucesso
+                  pesquisador:
+                    $ref: '#/components/schemas/Pesquisador'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '409':
+          description: E-mail já cadastrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/auth/login:
+    post:
+      tags: [Autenticação]
+      summary: Fazer login e receber o token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login realizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '401':
+          description: E-mail ou senha inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/amostras:
+    get:
+      tags: [Amostras]
+      summary: Listar o catálogo de amostras
+      responses:
+        '200':
+          description: Lista de amostras
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Amostra'
+
+  /api/amostras/{id}:
+    get:
+      tags: [Amostras]
+      summary: Consultar uma amostra
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Amostra encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Amostra'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '404':
+          description: Amostra não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/lista:
+    get:
+      tags: [Lista de solicitação]
+      summary: Ver a lista de solicitação do pesquisador logado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lista atual
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lista'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+    delete:
+      tags: [Lista de solicitação]
+      summary: Esvaziar a lista de solicitação
+      security:
+        - bearerAuth: []
+      responses:
+        '204':
+          description: Lista esvaziada
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+
+  /api/lista/resumo:
+    get:
+      tags: [Lista de solicitação]
+      summary: Prévia dos valores (subtotal, desconto, transporte e total)
+      description: Aplica as regras 1 (desconto PIX) e 3 (transporte grátis para Parceiros) sem finalizar.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: formaPagamento
+          in: query
+          required: true
+          schema:
+            type: string
+            enum: [pix, cartao, boleto]
+      responses:
+        '200':
+          description: Resumo calculado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Resumo'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+
+  /api/lista/itens:
+    post:
+      tags: [Lista de solicitação]
+      summary: Adicionar amostra à lista
+      description: |
+        Regra 2: só é possível adicionar amostras com alíquotas disponíveis.
+        Se a amostra já estiver na lista, a quantidade é somada, e o total não pode passar do estoque.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ItemListaRequest'
+      responses:
+        '201':
+          description: Amostra adicionada; retorna a lista atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lista'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+        '404':
+          description: Amostra não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+        '422':
+          description: Sem alíquotas disponíveis ou quantidade maior que o estoque
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/lista/itens/{amostraId}:
+    delete:
+      tags: [Lista de solicitação]
+      summary: Remover amostra da lista
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: amostraId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Amostra removida; retorna a lista atualizada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Lista'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+        '404':
+          description: A amostra não está na lista
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/solicitacoes:
+    post:
+      tags: [Solicitações]
+      summary: Finalizar a solicitação de amostras
+      description: |
+        Confere o estoque de novo, dá baixa nas alíquotas, calcula os valores (regras 1 e 3),
+        registra a solicitação, soma o valor pago ao total do pesquisador e esvazia a lista.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FinalizarRequest'
+      responses:
+        '201':
+          description: Solicitação confirmada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FinalizarResponse'
+        '400':
+          description: Forma de pagamento inválida, endereço ausente ou lista vazia
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+        '422':
+          description: Alguma amostra não tem mais alíquotas suficientes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+    get:
+      tags: [Solicitações]
+      summary: Histórico de solicitações do pesquisador logado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Solicitações, da mais recente para a mais antiga
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Solicitacao'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+
+  /api/solicitacoes/{id}:
+    get:
+      tags: [Solicitações]
+      summary: Consultar uma solicitação do pesquisador logado
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Solicitação encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Solicitacao'
+        '400':
+          $ref: '#/components/responses/RequisicaoInvalida'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
+        '404':
+          description: Solicitação não encontrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Erro'
+
+  /api/pesquisadores/me:
+    get:
+      tags: [Pesquisadores]
+      summary: Dados do pesquisador logado
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Perfil do pesquisador
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pesquisador'
+        '401':
+          $ref: '#/components/responses/NaoAutorizado'
