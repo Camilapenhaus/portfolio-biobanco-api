@@ -58,14 +58,22 @@ k6 run -e BASE_URL=http://localhost:3000 tests/login.test.js
 
 ## Dashboard e relatório HTML
 ```
-K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=relatorio-login.html k6 run tests/login.test.js
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_PERIOD=1s K6_WEB_DASHBOARD_EXPORT=relatorio-login.html k6 run tests/login.test.js
 ```
 
 ```
 K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=relatorio-lista.html k6 run tests/lista.test.js
 ```
 
-Durante a execução, o dashboard fica disponível em http://localhost:5665. Ao final, o relatório é salvo no arquivo HTML indicado.
+```
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_PERIOD=1s K6_WEB_DASHBOARD_EXPORT=relatorio-estresse-login.html k6 run --vus 20 --iterations 100 tests/login.test.js
+```
+
+Durante a execução, o dashboard fica disponível em http://localhost:5665. Se a aba do dashboard estiver aberta, o k6 espera ela ser fechada para encerrar. Ao final, o relatório é salvo no arquivo HTML indicado.
+
+`K6_WEB_DASHBOARD_PERIOD=1s` é necessário nos testes curtos (login e estresse, de 3 a 6 segundos): o dashboard agrega os dados a cada 10 segundos por padrão e, sem esse ajuste, o relatório não é gravado.
+
+Os relatórios gerados (`relatorio-login.html`, `relatorio-lista.html`, `relatorio-estresse-login.html`) ficam nesta pasta e fazem parte das evidências. O resultado e a análise estão em `testes/testes-performance.md`.
 
 ## Observações
 - Os dados de login são fictícios e pertencem ao ambiente de estudo.
