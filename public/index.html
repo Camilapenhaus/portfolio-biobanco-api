@@ -35,7 +35,8 @@
 
   <!-- Login e Cadastro -->
   <main id="tela-acesso" class="tela-acesso">
-    <section class="cartao acesso">
+    <section class="cartao acesso" data-testid="caixa-acesso">
+      <h2 class="acesso-titulo">Acesse sua conta</h2>
       <div class="abas">
         <button class="aba ativa" data-aba="login" data-testid="aba-login">Entrar</button>
         <button class="aba" data-aba="cadastro" data-testid="aba-cadastro">Cadastrar</button>
@@ -43,7 +44,7 @@
 
       <form id="form-login" class="formulario" data-testid="form-login">
         <label>E-mail
-          <input type="email" id="login-email" required data-testid="login-email" />
+          <input type="email" id="login-email" required placeholder="nome@laboratorio.test" data-testid="login-email" />
         </label>
         <label>Senha
           <input type="password" id="login-senha" required data-testid="login-senha" />
@@ -68,17 +69,16 @@
       </form>
     </section>
 
-    <aside class="cartao regras">
-      <h2>Como funciona</h2>
-      <ul>
-        <li><strong>PIX:</strong> 10% de desconto na taxa de processamento.</li>
-        <li><strong>Estoque:</strong> só entram na lista amostras com alíquotas (porções da amostra, cada uma num tubo) disponíveis.</li>
-        <li><strong>Pesquisador Parceiro:</strong> transporte refrigerado grátis. Você vira Parceiro ao acumular R$ 300,00 em taxas.</li>
-      </ul>
-      <p class="links">
-        <a href="/api-docs" target="_blank" rel="noopener">Documentação da API (Swagger)</a>
-      </p>
-    </aside>
+    <p class="como-funciona" data-testid="como-funciona">
+      <strong>Como funciona:</strong>
+      <span>PIX com 10% de desconto</span>
+      <span aria-hidden="true">·</span>
+      <span>Só entram alíquotas (tubos da amostra) em estoque</span>
+      <span aria-hidden="true">·</span>
+      <span>Parceiros (R$ 300,00 em taxas) têm transporte grátis</span>
+      <span aria-hidden="true">·</span>
+      <a href="/api-docs" target="_blank" rel="noopener">Documentação da API</a>
+    </p>
   </main>
 
   <!-- Área logada -->

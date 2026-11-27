@@ -51,7 +51,8 @@ h2 {
   padding: 34px 32px;
   background: var(--azul-claro);
   color: var(--azul-escuro);
-  border-bottom: 5px solid var(--azul-medio);
+  border-top: 5px solid var(--azul);
+  border-bottom: 5px solid var(--azul);
 }
 .marca { display: flex; align-items: center; gap: 28px; }
 .logo {
@@ -77,7 +78,7 @@ h2 {
 .marca p { margin: 10px 0 0; color: var(--azul); font-size: 1.15rem; }
 
 /* Depois do login: faixa menor, com o usuário à direita */
-body.logado .topo { justify-content: space-between; padding: 14px 32px; border-bottom-width: 4px; }
+body.logado .topo { justify-content: space-between; padding: 14px 32px; border-top-width: 4px; border-bottom-width: 4px; }
 body.logado .marca { gap: 16px; }
 body.logado .logo { width: 72px; height: 72px; border-width: 4px; }
 body.logado .logo-helice { width: 30px; height: 58px; }
@@ -114,12 +115,37 @@ body.logado .marca p { margin-top: 4px; font-size: 0.95rem; }
 }
 
 .tela-acesso {
-  display: grid;
-  grid-template-columns: minmax(280px, 420px) minmax(240px, 360px);
-  gap: 24px;
-  justify-content: center;
-  padding: 40px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  padding: 44px 32px 24px;
 }
+.acesso {
+  width: 100%;
+  max-width: 420px;
+  border: 3px solid var(--azul);
+  border-radius: 16px;
+  padding: 26px 30px 30px;
+}
+.acesso-titulo { text-align: center; font-size: 1.35rem; margin-bottom: 16px; }
+.acesso input { padding: 11px 12px; font-size: 1rem; border-color: #b9cfe0; }
+.acesso .btn[type="submit"] { padding: 13px 16px; font-size: 1.05rem; margin-top: 4px; }
+.como-funciona {
+  width: 100%;
+  max-width: 960px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px 14px;
+  font-size: 0.82rem;
+  color: var(--cinza);
+  text-align: center;
+}
+.como-funciona strong { color: var(--azul-escuro); }
+.como-funciona span { white-space: nowrap; }
+.como-funciona a { color: var(--azul); }
 
 .abas { display: flex; gap: 4px; margin-bottom: 16px; border-bottom: 1px solid var(--borda); }
 .aba {
@@ -163,9 +189,6 @@ legend { font-size: 0.9rem; padding: 0 4px; }
 .btn-secundario:hover { background: rgba(11, 79, 124, 0.08); }
 .btn-pequeno { padding: 6px 12px; font-size: 0.85rem; }
 
-.regras ul { padding-left: 18px; margin: 0 0 12px; }
-.regras li { margin-bottom: 8px; }
-.links a { color: var(--azul); font-weight: 600; }
 
 /* ---------- Área logada ---------- */
 .tela-app {
@@ -256,7 +279,8 @@ legend { font-size: 0.9rem; padding: 0 4px; }
 .rodape a { color: var(--azul); }
 
 @media (max-width: 900px) {
-  .tela-acesso, .tela-app { grid-template-columns: 1fr; padding: 16px; }
+  .tela-app { grid-template-columns: 1fr; padding: 16px; }
+  .tela-acesso { padding: 24px 16px; }
   .topo { padding: 20px 16px; flex-wrap: wrap; }
   .marca { flex-direction: column; gap: 14px; }
   .logo { width: 110px; height: 110px; }
